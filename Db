@@ -1,22 +1,24 @@
--- Создание базы данных (если еще не создана)
-CREATE DATABASE IF NOT EXISTS `borisov3` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+-- Создаем базу данных borisov3
+CREATE DATABASE IF NOT EXISTS `borisov3` 
+DEFAULT CHARACTER SET utf8mb4 
+COLLATE utf8mb4_unicode_ci;
+
 USE `borisov3`;
 
--- Создание таблицы пользователей (основано на ваших скриншотах)
+-- Создаем таблицу reg (пользователи)
 CREATE TABLE IF NOT EXISTS `reg` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `login` varchar(100) NOT NULL,        -- Логин пользователя
-  `mail` varchar(100) NOT NULL,         -- Почта
-  `pass` varchar(100) NOT NULL,         -- Пароль
-  `name` varchar(100) DEFAULT NULL,     -- Имя
-  `surname` varchar(100) DEFAULT NULL,  -- Фамилия
-  `patronymic` varchar(100) DEFAULT NULL, -- Отчество
-  `img` varchar(255) DEFAULT 'default.png', -- Поле для аватара
-  `status` int(1) DEFAULT '0',          -- Статус (например, 0 - юзер, 1 - админ)
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `login` VARCHAR(100) NOT NULL,
+  `mail` VARCHAR(100) NOT NULL,
+  `pass` VARCHAR(100) NOT NULL,
+  `name` VARCHAR(100) DEFAULT NULL,
+  `surname` VARCHAR(100) DEFAULT NULL,
+  `patronymic` VARCHAR(100) DEFAULT NULL,
+  `img` VARCHAR(255) DEFAULT 'default.png',
+  `status` INT(1) DEFAULT '0', -- 0 для обычных юзеров, 1 для админа
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Пример тестового пользователя (пароль: 123)
+-- Добавляем тестового аккаунта (пароль: 123)
 INSERT INTO `reg` (`login`, `mail`, `pass`, `name`, `status`) 
 VALUES ('admin', 'admin@mail.ru', '123', 'Администратор', 1);
-
