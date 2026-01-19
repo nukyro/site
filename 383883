@@ -1,0 +1,111 @@
+<?php
+$host = 'localhost';
+$user = 'root';
+$pass = '';
+$dbname = 'borisov3';
+
+$conn = mysqli_connect($host, $user, $pass, $dbname);
+mysqli_set_charset($conn, "utf8mb4");
+
+if (isset($_POST['register'])) {
+    $login = $_POST['login'];
+    $mail = $_POST['mail'];
+    $pass = $_POST['pass'];
+
+    $query = "INSERT INTO `reg` (login, mail, pass) VALUES ('$login', '$mail', '$pass')";
+    if (mysqli_query($conn, $query)) {
+        header("Location: auth.php");
+    }
+}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Регистрация</title>
+</head>
+<body>
+    <header><h1>МОЯ СЕМЬЯ - МОЙ КОСМОС</h1></header>
+    <nav>
+        <a href="index.php">ГЛАВНАЯ</a>
+        <a href="auth.php">АВТОРИЗАЦИЯ</a>
+    </nav>
+    <div class="main_panel">
+        <form method="post" action="register.php">
+            <input type="text" name="login" placeholder="Логин" required>
+            <input type="email" name="mail" placeholder="Почта" required>
+            <input type="password" name="pass" placeholder="Пароль" required>
+            <input type="submit" name="register" value="Зарегистрироваться">
+        </form>
+    </div>
+</body>
+</html>
+
+
+
+<?php
+session_start();
+$host = 'localhost';
+$user = 'root';
+$pass = '';
+$dbname = 'borisov3';
+
+$conn = mysqli_connect($host, $user, $pass, $dbname);
+mysqli_set_charset($conn, "utf8mb4");
+
+if (isset($_POST['login_btn'])) {
+    $login = $_POST['login'];
+    $pass = $_POST['pass'];
+
+    $query = "SELECT * FROM `reg` WHERE login='$login' AND pass='$pass'";
+    $result = mysqli_query($conn, $query);
+
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_array($result);
+        $_SESSION['login'] = $row['login'];
+        header("Location: index.php");
+    } else {
+        echo "<script>alert('Неверные данные');</script>";
+    }
+}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Вход</title>
+</head>
+<body>
+    <header><h1>ВХОД В СИСТЕМУ</h1></header>
+    <nav>
+        <a href="index.php">ГЛАВНАЯ</a>
+        <a href="register.php">РЕГИСТРАЦИЯ</a>
+    </nav>
+    <div class="main_panel">
+        <form method="post" action="auth.php">
+            <input type="text" name="login" placeholder="Логин" required>
+            <input type="password" name="pass" placeholder="Пароль" required>
+            <input type="submit" name="login_btn" value="Войти">
+        </form>
+    </div>
+</body>
+</html>
+
+
+
+
+CREATE DATABASE IF NOT EXISTS `borisov3` 
+DEFAULT CHARACTER SET utf8mb4 
+COLLATE utf8mb4_unicode_ci;
+
+USE `borisov3`;
+
+CREATE TABLE IF NOT EXISTS `reg` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `login` VARCHAR(100) NOT NULL,
+  `mail` VARCHAR(100) NOT NULL,
+  `pass` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
