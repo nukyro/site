@@ -1,0 +1,86 @@
+<?php
+session_start();
+$host = 'localhost';
+$user = 'root';
+$pass = '';
+$dbname = 'borisov3';
+
+$conn = mysqli_connect($host, $user, $pass, $dbname);
+mysqli_set_charset($conn, "utf8mb4");
+?>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Расписание</title>
+</head>
+<body>
+    <header>
+        <h1>МОЯ СЕМЬЯ - МОЙ КОСМОС</h1>
+    </header>
+
+    <nav>
+        <a href="index.php">ГЛАВНАЯ</a>
+        <a href="schedule.php">РАСПИСАНИЕ</a>
+        <a href="competition.php">ОПИСАНИЕ КОНКУРСА</a>
+        <?php if(isset($_SESSION['login'])): ?>
+            <a href="profile.php"><?php echo $_SESSION['login']; ?></a>
+        <?php else: ?>
+            <a href="register.php">РЕГИСТРАЦИЯ</a>
+        <?php endif; ?>
+    </nav>
+
+    <div class="block">
+        <div class="text">
+            <h2>Программа мероприятий</h2>
+            
+            <table border="1" style="width:100%; border-collapse: collapse; margin-top: 20px; color: white; border-color: #054366;">
+                <tr style="background: #054366;">
+                    <th>Время</th>
+                    <th>Событие</th>
+                    <th>Место</th>
+                </tr>
+
+                <?php
+                $query = "SELECT * FROM `schedule` ORDER BY id ASC";
+                $result = mysqli_query($conn, $query);
+
+                while($row = mysqli_fetch_array($result))
+                {
+                    echo "<tr>";
+                    echo "<td style='padding: 10px;'>".$row['time_range']."</td>";
+                    echo "<td style='padding: 10px;'>".$row['event_name']."</td>";
+                    echo "<td style='padding: 10px;'>".$row['location']."</td>";
+                    echo "</tr>";
+                }
+                ?>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        <p>Права защищены &copy; 2024</p>
+    </footer>
+</body>
+</html>
+
+
+
+
+USE `borisov3`;
+
+CREATE TABLE IF NOT EXISTS `schedule` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `time_range` VARCHAR(50) NOT NULL,
+  `event_name` VARCHAR(255) NOT NULL,
+  `location` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Добавим тестовые данные
+INSERT INTO `schedule` (`time_range`, `event_name`, `location`) VALUES 
+('10:00 - 11:30', 'Открытие: Семья на орбите', 'Главная сцена'),
+('12:00 - 14:00', 'Квест: Тайны Циолковского', 'Парк им. Циолковского'),
+('15:00 - 17:00', 'Мастер-класс по ракетостроению', 'Музей космонавтики');
+
