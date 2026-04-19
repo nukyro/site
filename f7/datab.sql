@@ -2,6 +2,22 @@ CREATE DATABASE IF NOT EXISTS datab;
 USE datab;
 
 DROP TABLE IF EXISTS requests;
+DROP TABLE IF EXISTS reg;
+
+CREATE TABLE reg (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    login VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    status INT DEFAULT 0,
+    surname VARCHAR(100) NOT NULL,
+    name VARCHAR(100) NOT NULL
+);
+
+INSERT INTO reg (login, email, password, status, surname, name) VALUES
+('admin', 'admin@admin.com', 'admin', 1, 'Админ', 'Админов'),
+('user', 'user@user.com', 'user', 0, 'Пользователь', 'Тест');
+
 
 CREATE TABLE requests (
     id INT AUTO_INCREMENT PRIMARY KEY,
